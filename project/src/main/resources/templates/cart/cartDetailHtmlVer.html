@@ -6,6 +6,8 @@
 </head>
 <body>
     <div th:insert="~{common/fragment::navi}"></div>
+
+
     <div class="container">
         <div class="row" >
             <table class="table">
@@ -86,7 +88,7 @@ function clearBasket(){
 
 
 function htmlCart(){
-        alert("htmlCart IN");
+        
         //  frm1.list.value = localStorage.getItem('basket');
         var arr = JSON.parse(localStorage.getItem('basket')); //[10,20,30]
         frm1.cart2.value = arr.join(','); //10,20,30
@@ -167,36 +169,19 @@ function remove(obj){
     console.log(ori);
 
     //aa 는 글자임, item 숫자
-    var ss = ori.filter( aa=> aa!=item ); 
+    var ss = ori.filter( aa=> aa.productId !=item ); 
+
     console.log('삭제후 : ' + ss);
- 
+    
+    $(obj).closest('tr').remove();
+
+    if(ss.length==0){
+        localStorage.clear();
+        return;
+    }
 
     localStorage.setItem('basket', JSON.stringify(ss));
-
-    $(obj).closest('tr').remove();
     
-    htmlCart();
-
-    // var ss = obj.parentNode.parentNode.children[1].textContent;
-
-    // for(var i =0; i< ori.length; i++){
-    //     if(ori[i]== ss){
-    //         ss.innerText = '';
-    
-    //     }
-    // }
-
-
-    // console.log(ss);//잘나옴
-
-
-    // for(var i=0; i<ss.length;i++){
-    //     ss[i].innerText = '';
-    // }    
-      
-
-    // }
-    // ss.innerText = '';
 }
 
 function allCheckbox(){
