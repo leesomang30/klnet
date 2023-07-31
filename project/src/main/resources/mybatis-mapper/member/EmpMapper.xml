@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.somang.springbootdeveloper.dao.EmpMapper">
+
+    <select id="selectEmp" resultType="org.somang.springbootdeveloper.DTO.Employment" parameterType="string">
+        select EMPLOYEE_ID
+             , FIRST_NAME
+             , LAST_NAME
+             , EMAIL
+             , PHONE_NUMBER
+        from EMPLOYEES
+        where EMPLOYEE_ID = #{no}
+    </select>
+
+    <select id="selectEmpCount" resultType="int">
+        select count(*)
+        from EMPLOYEES
+    </select>
+
+    <select id="selectEmp2" resultType="org.somang.springbootdeveloper.DTO.Employment">
+        SELECT *
+        FROM EMPLOYEES
+        WHERE JOB_ID= 'FI_ACCOUNT' AND SALARY >= 8000
+    </select>
+
+    <select id="selectEmp3" resultType="org.somang.springbootdeveloper.DTO.Employment" >
+        SELECT *
+        FROM EMPLOYEES
+        WHERE JOB_ID=  #{jobId}
+          AND SALARY >= #{salary}
+
+    </select>
+
+    <select id="selectEmp4" resultType="org.somang.springbootdeveloper.DTO.Employment" parameterType="org.somang.springbootdeveloper.DTO.Employment" >
+        SELECT *
+        FROM EMPLOYEES
+        WHERE JOB_ID=  #{jobId}
+        AND SALARY >= #{salary}
+    </select>
+
+    <select id="selectEmp5" resultType="org.somang.springbootdeveloper.DTO.Employment" parameterType="map" >
+        SELECT *
+        FROM EMPLOYEES
+        WHERE JOB_ID=  #{jobId}
+        AND SALARY >= #{salary}
+    </select>
+
+    <select id="selectEmp6" resultType="org.somang.springbootdeveloper.DTO.Employment"  >
+        <![CDATA[
+        SELECT *
+        FROM EMPLOYEES
+        WHERE rownum < #{page}
+        ]]>
+    </select>
+
+    <select id="selectEmp7" resultType="org.somang.springbootdeveloper.DTO.Employment" parameterType="org.somang.springbootdeveloper.DTO.Employment" >
+        SELECT *
+        FROM EMPLOYEES
+        WHERE JOB_ID=  #{jobId}
+        <if test="salary != '' ">
+            AND SALARY >= #{salary}  /*평상시에는 job id만 검색하다가 샐러리값이 있을 때만 and조건 씀, if문 계속 추가해서 쓸 수 있음 */
+        </if>
+
+    </select>
+
+    <select id="selectEmp8" resultType="org.somang.springbootdeveloper.DTO.Employment" >
+        <![CDATA[
+        SELECT *
+        FROM EMPLOYEES
+        WHERE JOB_ID= #{emp.jobId}
+        AND SALARY >= #{emp.salary}
+        AND rownum < #{page}
+        ]]>
+    </select>
+
+    <insert id="insertEmp1"  parameterType="org.somang.springbootdeveloper.DTO.Employment">
+        INSERT INTO EMPLOYEES(employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id)
+        VALUES(#{employeeId}, #{firstName},  #{lastName}, #{email}, #{phoneNumber}, #{hireDate}, #{jobId}, #{salary}, #{commissionPct , jdbcType=NUMERIC}, #{managerId}, #{departmentId  , jdbcType=NUMERIC})
+    </insert>
+
+    <delete id="deleteEmp1" parameterType="org.somang.springbootdeveloper.DTO.Employment">
+      DELETE FROM EMPLOYEES WHERE employee_id = #{employeeId}
+    </delete>
+
+    <update id="updateEmp1">
+        UPDATE EMPLOYEES SET LAST_NAME = 'LEE' WHERE JOB_ID = #{emp.jobId}
+    </update>
+
+    <select id="selectEmp9" resultType="org.somang.springbootdeveloper.DTO.Employment">
+        SELECT *
+        FROM EMPLOYEES
+    </select>
+
+    <select id="selectEmp10" resultType="int"  parameterType="string">
+        select count(*)
+        from MEMBERJOIN
+        where user_id = #{userId}
+    </select>
+
+
+    <insert id="insertEmp2" parameterType="org.somang.springbootdeveloper.DTO.Member">
+        INSERT INTO MEMBERJOIN(user_id, user_name, birthdate, sex, phonenumber, email, interests, zipcode, address_main, address_detail, address_ref)
+        VALUES(#{userId}, #{userName}, #{birthDate}, #{sex}, #{phoneNumber}, #{email}, #{interests, jdbcType=VARCHAR}, #{zipcode}, #{addressMain}, #{addressDetail}, #{addressRef})
+
+    </insert>
+
+    <select id="selectId" parameterType="string">
+        select count(*)
+        from MEMBERJOIN
+        where user_id = #{userId}
+    </select>
+
+
+</mapper>

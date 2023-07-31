@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.somang.springbootdeveloper.dao.CartMapper">
+
+    <select id="selectListCartA" resultType="org.somang.springbootdeveloper.DTO.Cart">
+        SELECT *
+        FROM CART
+        ORDER BY PRODUCT_ID DESC
+
+    </select>
+
+
+    <select id="selectCartA" resultType="org.somang.springbootdeveloper.DTO.Cart" parameterType="String">
+        select *
+        from cart
+        where product_ID = #{productId}
+    </select>
+
+
+    <select id="selectListCartB" resultType="org.somang.springbootdeveloper.DTO.Cart" >
+        select *
+        from cart
+        where product_ID in
+        <foreach  item="item"  collection="list"  open="(" separator="," close=")"  >
+            #{item}
+        </foreach>
+    </select>
+
+
+</mapper>

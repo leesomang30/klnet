@@ -1,0 +1,21 @@
+19:34 WARN  o.s.w.s.m.s.DefaultHandlerExceptionResolver - 
+Resolved [org.springframework.validation.BindException: 
+org.springframework.validation.BeanPropertyBindingResult: 
+1 errors<EOL>Field error in object 'testDto' on field 'data': 
+rejected value [[{"content":"c1","writer":"writer1"}
+,{"content":"c2","writer":"writer2"}
+,{"content":"c3","writer":"writer3"}
+,{"content":"c4","writer":"writer4"}]]
+; 
+codes 
+[typeMismatch.testDto.data  
+,typeMismatch.data
+,typeMismatch.java.util.List
+,typeMismatch]; 
+
+arguments [org.springframework.context.support.DefaultMessageSourceResolvable: 
+codes [testDto.data,data]; arguments []; default message [data]];
+ default message [Failed to convert property value of type 'java.lang.String' 
+ to required type 'java.util.List' for property 'data'; 
+ Cannot convert value of type 'java.lang.String' to required type 'org.somang.springbootdeveloper.DTO.Reply'
+  for property 'data[0]': no matching editors or conversion strategy found]]

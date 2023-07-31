@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{common/fragment::headerFragment}"></th:block>
+    <title>cartDetail</title>
+</head>
+<body>
+<div th:insert="~{common/fragment::navi}"></div>
+
+<div class="container">
+    <div class="row" >
+        <div class="col-12 col-lg-4">
+            <div class="card mt-3">
+                <img th:src="@{'/images/'+${detail.productId} + '.jpg'}"   />
+                <div th:text="${detail.productName}">
+
+                </div>            
+                <div th:text="${detail.productPrice}+'원'">
+
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-1"></div>
+        <div class="col-12 mt-3 col-lg-4">
+            <input type="hidden" name="basket" th:value="${detail.productId}" />
+            
+            <form id="frm2" name="frm2" action="/cart/detail2" method="post" onsubmit="htmlCart();return false;">
+                <input type="hidden" name="abc">
+                <input type="button" value="장바구니저장" class="btn btn-outline-secondary" name="basket" th:itemId="${detail.productId}"  th:onclick="save(this.getAttribute('itemId'))" >
+                <button class="btn btn-outline-secondary">장바구니보기</button>
+            </form>
+        </div>
+    </div>
+</div>  
+
+<script th:inline="javascript"> 
+
+
+    $("input[name='basket']").on("click", function(){
+         alert("저장되었습니다.");
+    })
+    
+    //basket              [1,2,3]
+    //basket              [{번호: ,수량:1}, {번호: ,수량:1}, {번호: ,수량:1}]
+    // input type=data 
+    // form.submit();
+    
+    function save(val){
+        //console.log(val);
+        //var value = document.getElementById('productId').textContent;
+        
+        //로컬스토리지에 저장하는데 basket 가 기존에 있는지 봐야함.
+        var basket =  localStorage.getItem('basket');
+        
+        //basket(key) 안에 내용물(value)이 있음
+
+        var arr;
+        if(basket == null){
+            //basket 가 없으면 생성해서 만든다.
+            arr = [];
+        }else{
+            //basket 이 있으면 //[aa,asdf,asdf]
+            arr = JSON.parse(basket);            
+        }
+       
+        //중복제거
+        // arr = [1,3, 6];
+        // arr =  [{productId:10 ,cnt:1}, {productId:10 ,cnt:1}, {productId: ,cnt:1}];
+
+        //배열에서 val 값이 있냐? 없으면 등록. 
+
+        var searchItem = arr.find( (a)=> a.productId==val );
+
+        if(searchItem==null){
+            arr.push({productId:val ,nums:1});
+        }
+
+        localStorage.setItem('basket', JSON.stringify(arr) );
+  
+        
+      
+    }
+    function htmlCart(){
+        //  frm1.list.value = localStorage.getItem('basket');
+        //[{productId:10 ,cnt:1}, {productId:10 ,cnt:1}, {productId: ,cnt:1}];
+        
+        // var arr = JSON.parse(localStorage.getItem('basket')); //[10,20,30]
+        // frm1.cart2.value = arr.join(','); //10,20,30
+        // frm1.submit();
+ 
+        frm2.abc.value = localStorage.getItem('basket');
+        frm2.submit();
+
+  
+    }
+    
+    
+    function ajaxCart() {
+
+       //var aa = localStorage.getItem('basket');
+       //
+       var arr = ["10", "20", "30"];
+       //'["10", "20", "30"]'
+       
+       // {"basket", '10, 20,30'  }
+
+        $.ajax({
+                        
+            url: "/cart/ajaxSend",
+            type: "POST", 
+            contentType: "application/json",
+            // data: {basket: '["1","2", "3"]'}, 비정상
+            //data: {basket: '1,2,3,4'}, 정상
+            data:  localStorage.getItem('basket'),
+            //data : '["10", "20", "30"]'
+            success: function(result){
+                console.log(result);
+            }
+        })
+
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>

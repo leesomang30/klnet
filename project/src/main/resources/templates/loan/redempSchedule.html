@@ -1,0 +1,21 @@
+<table class="table">
+    <thead>
+      <th>회차</th>
+      <th>상환날짜</th>
+      <th>상환원금</th>
+      <th>상환이자</th>
+      <th>상환금액</th>
+      <th>대출잔액</th>
+    </thead>
+    <tbody >
+        <tr th:each="redemp : ${list}">
+            <td> [[${redemp.nums}]] </td>
+            <td> [[${redemp.rdmpDt}]] </td>
+            <td  th:text="${#numbers.formatInteger(redemp.rdmpPrcp, 0, 'COMMA')}"></td>
+            <td  th:text="${#numbers.formatInteger(redemp.rdmpItr, 0, 'COMMA')}"></td>
+            <td  th:text="${#numbers.formatInteger(redemp.rdmpAmt, 0, 'COMMA')}"></td>
+            <td  th:text="${#numbers.formatInteger(redemp.balance, 0, 'COMMA')}"></td>
+        </tr>
+    </tbody>
+</table>
+

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.somang.springbootdeveloper.dao.DeliveryMapper">
+
+    <insert id="insertDelivery1" parameterType="org.somang.springbootdeveloper.DTO.Delivery">
+        INSERT INTO DELIVERY (user_id, delivery_seq, alias_nm, receiver_nm, cell_num, addr_main, addr_detail, addr_ref, zip_cd, basic_yn)
+        VALUES(#{userId}, (select LPAD(nvl(max(DELIVERY_seq), 0)+1, 3,'0') from DELIVERY where user_id = #{userId}), #{aliasNm}, #{receiverNm}, #{cellNum}, #{addrMain}, #{addrDetail}, #{addrRef}, #{zipCd},
+            (
+                select case when count(*) = 0
+                            then 'Y'
+                            else ''
+                        end
+                from DELIVERY where user_id = #{userId}
+            )
+        )
+
+    </insert>
+
+    <select id="selectDelivery1" parameterType="org.somang.springbootdeveloper.DTO.Delivery" resultType="org.somang.springbootdeveloper.DTO.Delivery">
+        select *
+          from DELIVERY
+         where user_id = #{userId}
+    </select>
+
+
+    <select id="selectDelivery2" parameterType="org.somang.springbootdeveloper.DTO.Delivery" resultType="org.somang.springbootdeveloper.DTO.Delivery">
+        select *
+          from DELIVERY
+         where user_id = #{userId}
+           and DELIVERY_Seq = #{deliverySeq}
+    </select>
+
+
+
+    <update id="updateNewDelivery1" parameterType="org.somang.springbootdeveloper.DTO.Delivery">
+        UPDATE DELIVERY
+           SET BASIC_YN = 'Y'
+         WHERE user_id = #{userId}
+           AND DELIVERY_Seq = #{deliverySeq}
+    </update>
+
+
+    <update id="updateBeforeDelivery2" parameterType="org.somang.springbootdeveloper.DTO.Delivery">
+        UPDATE DELIVERY
+           SET BASIC_YN = 'N'
+         WHERE user_id = #{userId}
+           AND BASIC_YN = 'Y'
+    </update>
+
+    <update id="updateReviseAddress" parameterType="org.somang.springbootdeveloper.DTO.Delivery">
+        update DELIVERY
+           set ALIAS_NM = #{aliasNm},
+               RECEIVER_NM = #{receiverNm},
+               CELL_NUM = #{cellNum},
+               ZIP_CD = #{zipCd},
+               ADDR_MAIN = #{addrMain},
+               ADDR_DETAIL = #{addrDetail},
+               ADDR_REF = #{addrRef}
+         where user_id = #{userId}
+           and DELIVERY_SEQ = #{deliverySeq}
+    </update>
+
+    <delete id="deleteAddress" parameterType="org.somang.springbootdeveloper.DTO.Delivery">
+        delete from DELIVERY
+         where USER_ID = #{userId}
+           and DELIVERY_SEQ = #{deliverySeq}
+    </delete>
+
+</mapper>
+
+

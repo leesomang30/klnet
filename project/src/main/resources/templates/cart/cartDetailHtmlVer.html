@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{common/fragment::headerFragment}"></th:block>
+    <title>cartDetailHtmlVer</title>
+</head>
+<body>
+    <div th:insert="~{common/fragment::navi}"></div>
+    <div class="container">
+        <div class="row" >
+            <table class="table">
+                <thead>
+                   <tr>
+                    <td><input type="checkbox" onclick="allCheckbox()"></td>
+                    <td></td>
+                    <td>상품명</td>
+                    <td>상품가격</td>
+                    <td>수량</td>
+                    <td>소계</td>
+                    <td>상태</td>
+                  </tr>
+                </thead>
+
+               <tbody>
+                  <tr th:each="cart : ${list}">
+                    <td><input type="checkbox"></td>
+                    <td><img th:src="@{'/images/'+${cart.productId} + '.jpg'}" style="width:70px"></td>
+                    <td th:text="${cart.productName}"></td>
+                    <td th:text="${cart.productPrice}"></td>
+                    <td th:productId="${cart.productId}">
+                        <button onclick="modifyTotal(this, -1)">-</button>
+                        <span th:text="${cart.nums}" ></span>
+                        <button onclick="modifyTotal(this, 1)">+</button>
+                    </td>
+                    <td th:text="${cart.productPrice * cart.nums }"  th:price="${cart.productPrice}"></td>
+                    <td><button th:productId="${cart.productId}" onclick="remove(this)">삭제</button></td>
+                  </tr>
+                  <tr th:if="${list == null}">
+                    <td colspan="7">장바구니가 비어있습니다.</td>
+                  </tr>
+               </tbody>
+
+
+            </table>
+
+        
+            <div><button class="btn btn-outline-secondary mt-3"  onclick="clearBasket()">장바구니비우기</button></div>
+        </div>
+    </div>
+<form name="frm1" method="post" action="/cart/htmlSend">
+    <input name="cart2" type="hidden" />
+</form>
+<script th:inline="javascript">
+
+function clearBasket(){
+
+    $('tbody tr').remove();
+
+    // var ss = parseInt(localStorage.getItem('basket'));
+
+    localStorage.clear('basket');
+
+
+    
+
+
+
+    // var theadInput = document.querySelector('thead input[type="checkbox"]');
+    
+    // var tbodyInput = document.querySelector('tbody input[type="checkbox"]');
+
+
+    // if(theadInput.checked) {
+    //     tbodyInput.checked = true;
+    // }
+    
+
+
+
+
+
+
+
+    // location.href("")
+}
+
+
+function htmlCart(){
+        alert("htmlCart IN");
+        //  frm1.list.value = localStorage.getItem('basket');
+        var arr = JSON.parse(localStorage.getItem('basket')); //[10,20,30]
+        frm1.cart2.value = arr.join(','); //10,20,30
+        frm1.submit();
+
+  
+    }
+
+function save(val , nums){ 
+    var basket =  localStorage.getItem('basket');
+        
+    var arr;
+    if(basket == null){ 
+        arr = [];
+    }else{ 
+        arr = JSON.parse(basket);            
+    }
+    
+
+    var searchItem = arr.find( (a)=> a.productId==val );
+
+    if(searchItem==null){
+        arr.push({productId:val ,nums:1});
+    }else{
+        searchItem.nums = nums;
+    }
+
+    localStorage.setItem('basket', JSON.stringify(arr) ); 
+}
+ 
+
+function modifyTotal(obj, val){
+    var parent  = $(obj).parent();
+
+    
+    var ss =  parent.children('span').text();
+
+    var cnt = parseInt(ss); 
+    var price = parent.next().attr('price'); 
+ 
+    cnt=cnt+val;
+
+    if(cnt<= 0){
+        cnt= 1;
+    };
+    parent.children('span').text(cnt);
+    parent.next().text(price * cnt);
+
+    var productId= parent.attr('productId');
+    //var nums= parent.attr('nums');
+
+    save(productId, cnt);
+}
+
+function plus(obj, val){
+    var ss =  $(obj).parent().children('span').text();
+    var cnt = parseInt(ss); 
+    var price = $(obj).parent().next().attr('price');
+
+    console.log('price : ' + price);
+
+    $(obj).parent().next().text(price * cnt);
+    
+
+    if(cnt >= 1){
+        cnt = cnt + val;
+        obj.previousElementSibling.textContent = cnt;
+        obj.parentNode.nextElementSibling.textContent = price * cnt;
+    }
+
+
+}
+
+function remove(obj){
+    var item = obj.getAttribute('productId'); 
+ 
+    var ori = JSON.parse(localStorage.getItem('basket'));
+    console.log(ori);
+
+    //aa 는 글자임, item 숫자
+    var ss = ori.filter( aa=> aa!=item ); 
+    console.log('삭제후 : ' + ss);
+ 
+
+    localStorage.setItem('basket', JSON.stringify(ss));
+
+    $(obj).closest('tr').remove();
+    
+    htmlCart();
+
+    // var ss = obj.parentNode.parentNode.children[1].textContent;
+
+    // for(var i =0; i< ori.length; i++){
+    //     if(ori[i]== ss){
+    //         ss.innerText = '';
+    
+    //     }
+    // }
+
+
+    // console.log(ss);//잘나옴
+
+
+    // for(var i=0; i<ss.length;i++){
+    //     ss[i].innerText = '';
+    // }    
+      
+
+    // }
+    // ss.innerText = '';
+}
+
+function allCheckbox(){
+
+    var theadInput = document.querySelector('thead input[type="checkbox"]');
+    
+    var tbodyInput = document.querySelectorAll('tbody input[type="checkbox"]');
+
+
+    if(theadInput.checked) {
+        for(var i=0; i < tbodyInput.length; i++){
+            tbodyInput[i].checked = true;
+        }
+        
+    }else{
+        for(var i=0; i < tbodyInput.length; i++){
+            tbodyInput[i].checked = false;
+        }
+    }
+
+ 
+
+    //  var tbody = allCheck.parentNode.parentNode.parentNode.nextElementSibling;
+    //  var tbodyInput = tbody.querySelectorAll('input[type="checkbox"]');
+    //  console.log(tbodyInput);
+     
+    //  for(var i=0;i< tbodyInput.length; i++){
+    //     tbodyInput[i].checked=allCheck.checked;
+    //  }
+
+    //  var isCheck=false;
+    //  if(allCheck.checked){
+    //     isCheck = true;
+    //  }
+
+    // for(var i=0;i< tbodyInput.length; i++){
+    //        tbodyInput[i].checked=isCheck;
+    // }
+
+
+
+    //  if(allCheck.checked){
+    //     for(var i=0;i< tbodyInput.length; i++){
+    //         tbodyInput[i].checked=true;
+    //     }
+    //  }else {
+    //     for(var i=0;i< tbodyInput.length; i++){
+    //         tbodyInput[i].checked=false;
+    //     }
+      
+    //  }
+}
+
+
+
+
+
+
+
+
+
+
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
