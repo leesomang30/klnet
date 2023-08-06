@@ -22,17 +22,16 @@
 <body>
 <div th:insert="~{common/fragment::navi}"></div>
 <div class="container">
-    <div class="row justify-content-center">
-
-        <div class="card mt-2 col-lg-3" th:each="itemList : ${list}">
-            <a th:href="@{/cart/detail(productId=${itemList.productId})}">
-                <img th:src="@{'/images/'+${itemList.productId} + '.jpg'}" class="card-img-top"/>
-            </a>
-            <a th:href="@{/cart/detail(productId=${itemList.productId})}" style="text-decoration: none;">[[${itemList.productName}]]</a>
-            <div th:text="${itemList.productPrice} +'원'"></div>
-         
+    <div class="row text-center">
+        <div class="col-6 col-sm-3" th:each="itemList : ${list}">
+            <div class="card mt-2">
+                <a th:href="@{/cart/detail(productId=${itemList.productId})}">
+                    <img th:src="@{'/images/'+${itemList.productId} + '.jpg'}" class="card-img-top"/>
+                </a>
+                <a th:href="@{/cart/detail(productId=${itemList.productId})}" style="text-decoration: none;">[[${itemList.productName}]]</a>
+                <div th:text="${#numbers.formatInteger(itemList.productPrice, 0, 'COMMA')} +'원'"></div>
+            </div>
         </div>
- 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>

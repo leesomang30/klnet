@@ -8,14 +8,14 @@
 <div th:insert="~{common/fragment::navi}"></div>
 
 <div class="container">
-    <div class="row" >
+    <div class="row text-center" >
         <div class="col-12 col-lg-4">
             <div class="card mt-3">
                 <img th:src="@{'/images/'+${detail.productId} + '.jpg'}"   />
                 <div th:text="${detail.productName}">
 
                 </div>            
-                <div th:text="${detail.productPrice}+'원'">
+                <div th:text="${#numbers.formatInteger(detail.productPrice, 0, 'COMMA')} +'원'">
 
                 </div>
             </div>
