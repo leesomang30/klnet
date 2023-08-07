@@ -8,4 +8,5 @@ import java.util.List;
 public interface ILoanService {
 
     public List<RedemptionScheduleDto> LoanDto(LoanDto loanDto);
+    public List<RedemptionScheduleDto> LoanDtoEqual(LoanDto loanDto);
 }

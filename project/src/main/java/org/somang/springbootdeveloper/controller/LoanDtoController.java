@@ -48,10 +48,18 @@ public class LoanDtoController {
 
         System.out.println("거치기간:"+loanDto.getUnredeemPeriod());
 
+        if("01".equals(loanDto.getCode())) {
+            List<RedemptionScheduleDto> aa = iLoanService.LoanDto(loanDto);
 
-        List<RedemptionScheduleDto> aa = iLoanService.LoanDto(loanDto);
+            model.addAttribute("list", aa);
+        }
 
-        model.addAttribute("list", aa);
+        else if("02".equals(loanDto.getCode())) {
+            List<RedemptionScheduleDto> bb = iLoanService.LoanDtoEqual(loanDto);
+            model.addAttribute("list", bb);
+        }
+
+        System.out.println("loanCalculate4 out :" + loanDto);
 
         return "loan/redempSchedule";
     }

@@ -16,6 +16,13 @@ public class LoanDto {
     private BigDecimal principalPayment;
     private BigDecimal principalAmount;
 
+    private int unredeemPeriod;
+    private int rdmEndCnt;
+    private BigDecimal principalPaymentPrint;
+    private BigDecimal principalAmountPrint;
+
+    private String code;
+
 
 
     public LocalDate getLoanDate() {
@@ -90,6 +97,46 @@ public class LoanDto {
         this.principalAmount = principalAmount;
     }
 
+    public int getUnredeemPeriod() {
+        return unredeemPeriod;
+    }
+
+    public void setUnredeemPeriod(int unredeemPeriod) {
+        this.unredeemPeriod = unredeemPeriod;
+    }
+
+    public int getRdmEndCnt() {
+        return rdmEndCnt;
+    }
+
+    public void setRdmEndCnt(int rdmEndCnt) {
+        this.rdmEndCnt = rdmEndCnt;
+    }
+
+    public BigDecimal getPrincipalPaymentPrint() {
+        return principalPaymentPrint;
+    }
+
+    public void setPrincipalPaymentPrint(BigDecimal principalPaymentPrint) {
+        this.principalPaymentPrint = principalPaymentPrint;
+    }
+
+    public BigDecimal getPrincipalAmountPrint() {
+        return principalAmountPrint;
+    }
+
+    public void setPrincipalAmountPrint(BigDecimal principalAmountPrint) {
+        this.principalAmountPrint = principalAmountPrint;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     @Override
     public String toString() {
         return "LoanDto{" +
@@ -102,6 +149,11 @@ public class LoanDto {
                 ", principalInterest=" + principalInterest +
                 ", principalPayment=" + principalPayment +
                 ", principalAmount=" + principalAmount +
+                ", unredeemPeriod=" + unredeemPeriod +
+                ", rdmEndCnt=" + rdmEndCnt +
+                ", principalPaymentPrint=" + principalPaymentPrint +
+                ", principalAmountPrint=" + principalAmountPrint +
+                ", code='" + code + '\'' +
                 '}';
     }
 }

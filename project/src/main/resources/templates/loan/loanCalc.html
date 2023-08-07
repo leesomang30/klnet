@@ -35,7 +35,14 @@
           </div>
           <div class="mt-3">
             <span>상환방법</span>
-            <input type="text" style="text-align: center; padding: 7px;margin-left: 10px;width:100px" placeholder="원금균등" readonly> 
+            <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group" style="margin-left: 10px;">
+              <input type="radio" class="btn-check" id="btncheck1" autocomplete="off" name="code" value="01">
+              <label class="btn btn-outline-primary" for="btncheck1">원금균등</label>
+            
+              <input type="radio" class="btn-check" id="btncheck2" autocomplete="off" name="code" value="02">
+              <label class="btn btn-outline-primary" for="btncheck2">원리금균등</label>
+            </div>
+            <!-- <input type="text" style="text-align: center; padding: 7px;margin-left: 10px;width:100px" placeholder="원금균등" readonly>  -->
           </div>
        </form>
       </div>
